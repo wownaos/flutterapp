@@ -1,6 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'screens/auth_screen.dart';
 import 'screens/splash_screen.dart';
 import 'router/locations.dart';
 
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-            future: Future.delayed(Duration(seconds: 10), () => 100),
+            future: Future.delayed(Duration(seconds: 3), () => 100),
             builder: (context, snapshot) {
               return AnimatedSwitcher(
               duration: Duration(milliseconds: 900),
@@ -56,6 +56,7 @@ class RadishApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // beamer에게 모든 페이지 이동권한을 줌
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       // 하위 서브 클래스들이 init을 할 수 있도록 해주는 역할
       routeInformationParser: BeamerParser(),
       // routerDelegate : 'beamer instance name' parser가 해석한 정보를 전달받을 객체
@@ -65,6 +66,19 @@ class RadishApp extends StatelessWidget {
 }
 
 final _routerDelegate = BeamerDelegate(
+    guards: [
+      BeamGuard(
+        // pathatterns 부분이 이해가 잘안됨
+        // ['/'] -> 모든 경로를 일치시키고 로그인 페이지를 표시할시
+        // "Invalid argument: Maximum call stack size exceeded"  에러 발생
+        // 재귀호출로 인한 문제
+          pathPatterns: ['/screens/:id'],
+          check: (context, location) => false,
+        showPage: BeamPage(
+            child: AuthScreen()
+        )
+      )
+    ],
     locationBuilder: BeamerLocationBuilder(
       // beamLocations 는 Beamer에게 어떤 화면을 맡길지 알려주는 파라미터입니다.
       beamLocations: [HomeLocation()]
