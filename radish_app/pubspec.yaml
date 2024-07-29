@@ -39,6 +39,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   logger:
   beamer: ^1.6.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

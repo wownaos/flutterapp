@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:radish_app/screens/home_screen.dart';
 import 'package:radish_app/screens/splash_screen.dart';
 import 'package:radish_app/screens/auth_screen.dart';
 import 'package:radish_app/router/locations.dart';
@@ -16,14 +17,19 @@ final _routerDelegate = BeamerDelegate(
         // ['/'] -> 모든 경로를 일치시키고 로그인 페이지를 표시할시
         // "Invalid argument: Maximum call stack size exceeded"  에러 발생
         // 재귀호출로 인한 문제
-          pathPatterns: ['/'],
+          pathPatterns: ['/lib'],
           check: (context, location) {
             final autoProvider = context.watch<AuthProvider>();
-            return autoProvider.isLoggedin;
+            return false;
           },
           showPage: BeamPage(
-              child: AutoScreen()
-          )
+              child: HomeScreen()
+          ),
+          onCheckFailed: (context, location) {
+            BeamPage(
+                child: AutoScreen()
+            );
+        }
       )
     ],
     locationBuilder: BeamerLocationBuilder(
