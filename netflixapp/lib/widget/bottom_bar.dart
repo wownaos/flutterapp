@@ -20,10 +20,3 @@ class BottomBar extends StatelessWidget {
   }
 }
 
-
-class IconBox {
-  Icon ic;
-  String str;
-
-  IconBox({this.ic,this.str});
-}
